@@ -46,18 +46,41 @@ game_state = {
 }
 
 def describe_room():
-    print()
+    room = rooms[game_state['current_room']]
+    print(room['description'])
+    if room['items']:
+        print(f"You see the following items: {', '.join(room['items'])}")
     
 def switch_turn():
-    print()
+    game_state['turn'] = 'Player 2' if game_state['turn'] == 'Player 1' else 'Player 1'
+
 def move(direction):
-    print()
+    current_room = game_state['current_room']
+    if direction in rooms[current_room]['exits']:
+        game_state['current_room'] = rooms[current_room]['exits'][direction]
+        describe_room()
+    else:
+        print(f"{game_state['turn']}, you can't go that way.")
 def take(item):
-    print()  
+    current_room = rooms[game_state['current_room']]
+    if item in current_room['items']:
+        game_state['inventory'].append(item)
+        current_room['items'].remove(item)
+        print(f"{game_state['turn']} has taken the {item}.")
+    else:
+        print(f"{game_state['turn']}, there is no {item} here.")  
 def drop(item):
-    print()      
+    if item in game_state['inventory']:
+        rooms[game_state['current_room']]['items'].append(item)
+        game_state['inventory'].remove(item)
+        print(f"{game_state['turn']} has dropped the {item}.")
+    else:
+        print(f"{game_state['turn']}, you don't have {item} in your inventory.")      
 def show_inventory():
-    print()  
+    if game_state['inventory']:
+        print(f"Inventory: {', '.join(game_state['inventory'])}")
+    else:
+        print("Your inventory is empty.")  
 def save_game():
     print()     
 def load_game():
