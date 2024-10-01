@@ -125,4 +125,4 @@ def main():
 
         switch_turn()  # Automatically switch turn after each command
      
-        
+main()
